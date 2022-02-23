@@ -1,4 +1,5 @@
 const express = require('express');
+const { json } = require('express/lib/response');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
@@ -36,6 +37,16 @@ app.post("/account", (request, response) => {
   })
 
   return response.status(201).send(`User ${name} create success`);
+})
+
+app.get("/statement/:cpf", (request, response) => {
+  const { cpf } = request.params;
+
+  const customer = customers.find((customer) => {
+    return customer.cpf === cpf;
+  });
+
+  return response.json(customer.statement);
 })
 
 app.listen(3333);
