@@ -53,4 +53,20 @@ app.get("/statement", verifyIfExistsAccountCpf, (request, response) => {
   return response.json(customer.statement);
 })
 
+app.post("/deposit", verifyIfExistsAccountCpf, (request, response) => {
+  const { description, amount } = request.body;
+  const { customer } = request;
+
+  const customerOperation = {
+    description,
+    amount,
+    type: "credit",
+    created_at: new Date()
+  }
+
+  customer.statement.push(customerOperation);
+
+  response.status(201).send();
+})
+
 app.listen(3333);
