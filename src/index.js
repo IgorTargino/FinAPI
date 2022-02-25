@@ -146,6 +146,14 @@ app.post("/withdraw", verifyIfExistsAccountCpf, (request, response) => {
   response.status(201).send();
 })
 
+app.get("/balance", verifyIfExistsAccountCpf, (request, response) => {
+  const { customer } = request;
+
+  const balance = getBalance(customer.statement);
+
+  return response.json(balance);
+})
+
 
 
 app.listen(3333);
