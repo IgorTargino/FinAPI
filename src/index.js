@@ -75,7 +75,7 @@ app.put("/account", verifyIfExistsAccountCpf, (request, response) => {
 
   customer.name = name;
 
-  response.send();
+  response.status(201).send();
 })
 
 app.delete("/account", verifyIfExistsAccountCpf, (request, response) => {
