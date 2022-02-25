@@ -36,6 +36,12 @@ function getBalance(statement) {
   return balance;
 }
 
+app.get("/account", verifyIfExistsAccountCpf, (request, response) => {
+  const { customer } = request;
+
+  return response.json(customer);
+})
+
 app.post("/account", (request, response) => {
   const { cpf, name } = request.body;
 
@@ -68,6 +74,16 @@ app.put("/account", verifyIfExistsAccountCpf, (request, response) => {
   }
 
   customer.name = name;
+
+  response.send();
+})
+
+app.delete("/account", verifyIfExistsAccountCpf, (request, response) => {
+  const { cpf } = request.customer;
+
+  const index = customers.findIndex((customer) => customer.cpf === cpf)
+
+  customers.splice(index, 1);
 
   response.send();
 })
