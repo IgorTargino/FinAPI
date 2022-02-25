@@ -59,10 +59,40 @@ app.post("/account", (request, response) => {
   return response.status(201).send(`User ${name} create success`);
 })
 
+app.put("/account", verifyIfExistsAccountCpf, (request, response) => {
+  const { name } = request.body;
+  const { customer } = request;
+
+  if (!name) {
+    response.status(400).json({ error: "Name is empty!" })
+  }
+
+  customer.name = name;
+
+  response.send();
+})
+
 app.get("/statement", verifyIfExistsAccountCpf, (request, response) => {
   const { customer } = request;
 
   return response.json(customer.statement);
+})
+
+app.get("/statement/date", verifyIfExistsAccountCpf, (request, response) => {
+  const { date } = request.query;
+  const { customer } = request;
+
+  const dateFormat = new Date(date + " 00:00");
+
+
+
+  const statement = customer.statement.filter(
+    (statement) =>
+      statement.created_at.toDateString() ===
+      dateFormat.toDateString()
+  );
+
+  return response.json(statement);
 })
 
 app.post("/deposit", verifyIfExistsAccountCpf, (request, response) => {
@@ -102,21 +132,6 @@ app.post("/withdraw", verifyIfExistsAccountCpf, (request, response) => {
   response.status(201).send();
 })
 
-app.get("/statement/date", verifyIfExistsAccountCpf, (request, response) => {
-  const { date } = request.query;
-  const { customer } = request;
 
-  const dateFormat = new Date(date + " 00:00");
-
-
-
-  const statement = customer.statement.filter(
-    (statement) =>
-      statement.created_at.toDateString() ===
-      dateFormat.toDateString()
-  );
-
-  return response.json(statement);
-})
 
 app.listen(3333);
