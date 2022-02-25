@@ -81,7 +81,10 @@ app.put("/account", verifyIfExistsAccountCpf, (request, response) => {
 app.delete("/account", verifyIfExistsAccountCpf, (request, response) => {
   const { customer } = request;
 
-  customers.splice(customer, 1);
+  const indexCostumer = costumers.findIndex(
+    costumerIndex => costumerIndex.cpf === costumer.cpf);
+
+  costumers.splice(indexCostumer, 1);
 
   return response.status(204).json(customers);
 })
